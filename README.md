@@ -43,6 +43,8 @@ Não se esqueça de gerar a sua migration para atualização no banco de dados.
 
 Esse é o schema (model) de Tarefa, utilizado para passar para os métodos que exigirem
 
+
+
 ```json
 {
   "id": 0,
