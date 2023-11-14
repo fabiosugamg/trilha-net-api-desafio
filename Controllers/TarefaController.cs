@@ -19,24 +19,29 @@ namespace TrilhaApiDesafio.Controllers
         public IActionResult ObterPorId(int id)
         {
             // TODO: Buscar o Id no banco utilizando o EF
+            var tarefa = _context.Tarefas.Find(id);
             // TODO: Validar o tipo de retorno. Se não encontrar a tarefa, retornar NotFound,
+            if(tarefa == null)
+                return NotFound();
             // caso contrário retornar OK com a tarefa encontrada
-            return Ok();
+            return Ok(tarefa);
         }
 
         [HttpGet("ObterTodos")]
         public IActionResult ObterTodos()
         {
             // TODO: Buscar todas as tarefas no banco utilizando o EF
-            return Ok();
+            var tarefa = _context.Tarefas.Find();
+            return Ok(tarefa);
         }
 
         [HttpGet("ObterPorTitulo")]
         public IActionResult ObterPorTitulo(string titulo)
         {
             // TODO: Buscar  as tarefas no banco utilizando o EF, que contenha o titulo recebido por parâmetro
+            var tarefa = _context.Tarefas.Where(x => x.Titulo.Contains (titulo));
             // Dica: Usar como exemplo o endpoint ObterPorData
-            return Ok();
+            return Ok(tarefa);
         }
 
         [HttpGet("ObterPorData")]
@@ -50,6 +55,7 @@ namespace TrilhaApiDesafio.Controllers
         public IActionResult ObterPorStatus(EnumStatusTarefa status)
         {
             // TODO: Buscar  as tarefas no banco utilizando o EF, que contenha o status recebido por parâmetro
+            
             // Dica: Usar como exemplo o endpoint ObterPorData
             var tarefa = _context.Tarefas.Where(x => x.Status == status);
             return Ok(tarefa);
@@ -62,6 +68,8 @@ namespace TrilhaApiDesafio.Controllers
                 return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
 
             // TODO: Adicionar a tarefa recebida no EF e salvar as mudanças (save changes)
+            _context.Add(tarefa);
+            _context.SaveChanges();
             return CreatedAtAction(nameof(ObterPorId), new { id = tarefa.Id }, tarefa);
         }
 
